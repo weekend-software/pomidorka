@@ -1,0 +1,35 @@
+#!/usr/bin/env python
+
+import sys
+
+from lib.daemon import Daemon
+from lib.client import Client
+
+
+def help_show():
+    print("""Usage:
+    pomidorka start|run|go
+        To start new 25-minute pomidorka.
+
+    pomidorka stop|drop|done
+        To stop running pomidorka.
+
+    pomidorka status|stats|stat|info
+        To check if there are any pomidorkas running."""
+    )
+
+if __name__ == "__main__":
+    pidfile = '/tmp/pomidorka.pid'
+    if 'daemon' in sys.argv:
+        app = Daemon(pidfile)
+        app.run()
+    else:
+        app = Client(pidfile)
+        if [i for i in ['go', 'run', 'start'] if i in sys.argv]:
+            app.start()
+        elif [i for i in ['stop', 'drop', 'done'] if i in sys.argv]:
+            app.stop()
+        elif [i for i in ['status', 'stats', 'stat', 'info'] if i in sys.argv]:
+            app.status()
+        else:
+            help_show()
