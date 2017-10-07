@@ -20,11 +20,13 @@ def help_show():
 
 if __name__ == "__main__":
     pidfile = '/tmp/pomidorka.pid'
+    data_fname = '/tmp/pomidorka_bucket.bin'
+
     if 'daemon' in sys.argv:
-        app = Daemon(pidfile)
+        app = Daemon(pidfile, data_fname)
         app.run()
     else:
-        app = Client(pidfile)
+        app = Client(pidfile, data_fname)
         if [i for i in ['go', 'run', 'start'] if i in sys.argv]:
             app.start()
         elif [i for i in ['stop', 'drop', 'done'] if i in sys.argv]:

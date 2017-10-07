@@ -2,10 +2,10 @@ from lib.pomodoro import Pomodoro
 
 
 class Client(object):
-    def __init__(self, daemon_pidfile):
+    def __init__(self, daemon_pidfile, data_fname):
         self.daemon_pidfile = daemon_pidfile
 
-        self.p = Pomodoro()
+        self.p = Pomodoro(data_fname)
 
     def start(self):
         duration = int(self.p.duration() / 60)

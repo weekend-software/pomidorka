@@ -1,8 +1,8 @@
 import time
 
 class Pomodoro(object):
-    def __init__(self):
-        self.fname = './bucket.bin'
+    def __init__(self, fname):
+        self.fname = fname
 
         data = self._read()
         self.running = bool(int(data[0]))

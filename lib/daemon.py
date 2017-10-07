@@ -8,8 +8,9 @@ from lib.notify import Notify
 
 
 class Daemon(object):
-    def __init__(self, pidfile):
+    def __init__(self, pidfile, data_fname):
         self.pidfile = pidfile
+        self.data_fname = data_fname
 
         self.duration = 25 * 60
         self.loop_delay = 5
@@ -40,7 +41,7 @@ class Daemon(object):
         sys.exit(0)
 
     def run(self):
-        p = Pomodoro()
+        p = Pomodoro(self.data_fname)
         n = Notify()
 
         print("Watching pomidorkas ...")
