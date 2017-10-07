@@ -24,7 +24,7 @@ class Daemon(object):
             signal.SIGINT
         )
         for s in signals:
-            signal.signal(s, self._pidfile_remove)
+            signal.signal(s, self._exit)
 
     def _pidfile_check(self):
         if os.path.isfile(self.pidfile):
@@ -35,18 +35,32 @@ class Daemon(object):
         with open(self.pidfile, 'w+') as fp:
             fp.write(str(os.getpid()))
 
-    def _pidfile_remove(self, signum, frame):
+    def _pidfile_remove(self):
         if os.path.isfile(self.pidfile):
             os.remove(self.pidfile)
+
+    def _exit(self, signum, frame):
+        self._pidfile_remove()
         sys.exit(0)
 
     def run(self):
-        p = Pomodoro(self.data_fname)
         n = Notify()
 
         print("Watching pomidorkas ...")
         while True:
-            if p.running and p.duration() > self.duration:
-                n.send()
-                p.stop()
+            p = Pomodoro(self.data_fname)
+
+            if p.running:
+                duration = p.duration()
+                left = self.duration - p.duration()
+                print('Found running pomidorka, checking duration')
+                if duration > self.duration:
+                    print('Pomidorka done, notifying and stopping')
+                    n.send()
+                    p.stop()
+                else:
+                    print('Pomidorka is going for %s seconds, %s seconds left' % (str(duration), str(left)))
+            else:
+                print('No running pomidorkas')
+
             time.sleep(self.loop_delay)

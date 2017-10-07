@@ -11,7 +11,8 @@ class Pomodoro(object):
 
     def _read(self):
         open(self.fname, 'a').close()  # touch
-        data = open(self.fname, 'rb+').read()
+        with open(self.fname, 'rb+') as fp:
+            data = fp.read()
         data = filter(None, data.strip())
         if not data:
             data = "0;0.0;"
@@ -24,7 +25,8 @@ class Pomodoro(object):
             ','.join([':'.join(i) for i in self.log])
         ])
         with open(self.fname, 'w+') as fp:
-            return fp.write(data)
+            result = fp.write(data)
+        return result
 
     save = _write
 
