@@ -31,7 +31,7 @@ git clone https://github.com/weekend-software/pomidorka.git ~/.pomidorka
 cd ~/.pomidorka
 
 # Install executable
-sudo ln -s ~/.pomidorka/misc/pomidorka /usr/local/bin/pomidorka
+sudo ln -s ~/.pomidorka/pomidorka /usr/local/bin/pomidorka
 
 # Provide autostart
 cp ./misc/pomidorka.desktop ~/.config/autostart/pomidorka.desktop
