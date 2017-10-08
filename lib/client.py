@@ -1,3 +1,6 @@
+import datetime
+import math
+
 from lib.pomodoro import Pomodoro
 
 
@@ -31,3 +34,27 @@ class Client(object):
             self.logger.info("Is running for %i minutes." % duration)
         else:
             self.logger.info("No pomidorkas running.")
+
+    def log_show(self):
+        data = self.p.log_show()
+        print("Started at       Duration")
+        print("-------------------------")
+
+        total = 0
+        date_last = ""
+
+        for p_item in data:
+            # https://stackoverflow.com/questions/9744775/
+            dt = str(datetime.datetime.fromtimestamp(int(float(p_item[0]))))
+            date = dt.split(' ')[0]
+            if date == date_last:
+                date = " " * 10
+            else:
+                date_last = date
+            time = dt.split(' ')[1][:-3]
+            duration = math.ceil(float(p_item[1]) / 60.0)
+            total += duration
+            print("%s %s + %2i min" % (date, time, duration))
+
+        print("-------------------------")
+        print("Total:            %3i min" % (total))

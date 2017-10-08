@@ -18,6 +18,19 @@ Is running for 22 minutes.
 
 $ pomidorka stop
 Pomidorka done! It took 22 minutes.
+
+$ pomidorka log
+Started at       Duration
+-------------------------
+2017-10-08 11:20 + 17 min
+           11:37 + 23 min
+           14:54 + 10 min
+           15:04 + 19 min
+           15:24 + 11 min
+           16:06 +  4 min
+           16:12 + 26 min
+-------------------------
+Total:            110 min
 ```
 
 ## Installation

@@ -48,3 +48,8 @@ class Pomodoro(object):
         if not self.running:
             return 0
         return time.time() - self.started
+
+    def log_show(self):
+        if len(self.log) > 10:
+            return self.log[-10:]
+        return self.log

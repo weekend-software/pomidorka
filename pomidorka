@@ -53,5 +53,7 @@ if __name__ == "__main__":
             app.start()
         elif args.action == 'stop':
             app.stop()
+        elif args.action == 'log':
+            app.log_show()
         else:
             app.status()
