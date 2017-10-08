@@ -11,9 +11,8 @@ class Pomodoro(object):
 
     def _read(self):
         open(self.fname, 'a').close()  # touch
-        with open(self.fname, 'rb+') as fp:
-            data = fp.read()
-        data = filter(None, data.strip())
+        with open(self.fname, 'r+') as fp:
+            data = fp.read().strip()
         if not data:
             data = "0;0.0;"
         return data.split(';')
