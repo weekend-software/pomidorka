@@ -37,6 +37,11 @@ class Client(object):
 
     def log_show(self):
         data = self.p.log_show()
+
+        if len(data) < 1:
+            print("No data to display")
+            return True
+
         print("Started at       Duration")
         print("-------------------------")
 
