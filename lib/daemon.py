@@ -8,9 +8,11 @@ from lib.notify import Notify
 
 
 class Daemon(object):
-    def __init__(self, pidfile, data_fname):
+    def __init__(self, logger, pidfile, data_fname):
         self.pidfile = pidfile
         self.data_fname = data_fname
+
+        self.logger = logger
 
         self.duration = 25 * 60
         self.loop_delay = 5
@@ -28,7 +30,7 @@ class Daemon(object):
 
     def _pidfile_check(self):
         if os.path.isfile(self.pidfile):
-            print("Looks like another instance is already running, check pidfile:\n  %s" % self.pidfile)
+            self.logger("Looks like another instance is already running, check pidfile:\n  %s" % self.pidfile)
             sys.exit(1)
 
     def _pidfile_write(self):
@@ -46,21 +48,21 @@ class Daemon(object):
     def run(self):
         n = Notify()
 
-        print("Watching pomidorkas ...")
+        self.logger("Watching pomidorkas ...")
         while True:
             p = Pomodoro(self.data_fname)
 
             if p.running:
                 duration = p.duration()
                 left = self.duration - p.duration()
-                print('Found running pomidorka, checking duration')
+                self.logger('Found running pomidorka, checking duration')
                 if duration > self.duration:
-                    print('Pomidorka done, notifying and stopping')
+                    self.logger('Pomidorka done, notifying and stopping')
                     n.send()
                     p.stop()
                 else:
-                    print('Pomidorka is going for %s seconds, %s seconds left' % (str(duration), str(left)))
+                    self.logger('Pomidorka is going for %s seconds, %s seconds left' % (str(duration), str(left)))
             else:
-                print('No running pomidorkas')
+                self.logger('No running pomidorkas')
 
             time.sleep(self.loop_delay)

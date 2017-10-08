@@ -10,10 +10,10 @@ Don't forget to put daemon to autostart, see Installation section for details.
 $ pomidorka --daemon &
 Starting daemon mode.
 
-$ pomidorka
+$ pomidorka start
 New pomidorka!
 
-$ pomidorka status
+$ pomidorka
 Is running for 22 minutes.
 
 $ pomidorka stop
@@ -31,7 +31,7 @@ git clone https://github.com/weekend-software/pomidorka.git ~/.pomidorka
 cd ~/.pomidorka
 
 # Install executable
-sudo cp ~/.pomidorka/misc/pomidorka /usr/local/bin/pomidorka
+sudo ln -s ~/.pomidorka/misc/pomidorka /usr/local/bin/pomidorka
 
 # Provide autostart
 cp ./misc/pomidorka.desktop ~/.config/autostart/pomidorka.desktop
