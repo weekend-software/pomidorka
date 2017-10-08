@@ -1,0 +1,3 @@
+#!/bin/bash
+
+PYTHONUNBUFFERED='yes' ~/.pomidorka/pomidorka $@ | tee /tmp/pomidorka.log

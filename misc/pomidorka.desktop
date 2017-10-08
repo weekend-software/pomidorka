@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name[en_US]=Pomidorka daemon
+Comment[en_US]=pomidorka --daemon
+Exec=pomidorka --daemon
+Icon=application-default-icon
+X-GNOME-Autostart-enabled=true
+Type=Application
