@@ -1,39 +1,46 @@
 #!/usr/bin/env python
 
-import sys
-import logging
+import argparse
 
 from lib.daemon import Daemon
 from lib.client import Client
 
 
-def help_show():
-    print("""Usage:
-    pomidorka (start|run|go)
-        To start new 25-minute pomidorka.
+def args_parse():
+    parser = argparse.ArgumentParser(description='Managing pomidorkas using pomodoro technique.')
 
-    pomidorka (stop|drop|done)
-        To stop running pomidorka.
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--daemon', '-D', action='store_true', default=False,
+        help='Run program in daemon mode.')
+    mode.add_argument('--client', '-c', action='store_true', default=True,
+        help='Run client mode commands.')
 
-    pomidorka (status|stats|stat|info)
-        To check if there are any pomidorkas running."""
-    )
+    parser.add_argument('action', type=str, nargs='?',
+        help='Action to perform: start, stop, status. Defaults to start.')
+
+    parser.add_argument('--data', '-d', type=str,
+        default='/tmp/pomidorka.dat',
+        help='Path to data file, should be same for daemon and client.')
+
+    parser.add_argument('--pidfile', '-p', type=str,
+        default='/tmp/pomidorka.pid',
+        help='Path to pidfile, used in daemon mode.')
+
+    return parser.parse_args()
 
 if __name__ == "__main__":
-    pidfile = '/tmp/pomidorka.pid'
-    data_fname = '/tmp/pomidorka.dat'
+    args = args_parse()
 
-    if 'daemon' in sys.argv:
+    if args.daemon:
         print('Starting daemon mode')
-        app = Daemon(pidfile, data_fname)
+        app = Daemon(args.pidfile, args.data)
         app.run()
     else:
-        app = Client(pidfile, data_fname)
-        if [i for i in ['go', 'run', 'start'] if i in sys.argv]:
-            app.start()
-        elif [i for i in ['stop', 'drop', 'done'] if i in sys.argv]:
+        app = Client(args.pidfile, args.data)
+
+        if args.action == 'stop':
             app.stop()
-        elif [i for i in ['status', 'stats', 'stat', 'info'] if i in sys.argv]:
+        elif args.action == 'status':
             app.status()
         else:
-            help_show()
+            app.start()
