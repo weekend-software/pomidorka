@@ -46,7 +46,7 @@ class Daemon(object):
         sys.exit(0)
 
     def run(self):
-        n = Notify()
+        n = Notify(self.logger)
 
         self.logger.info("Watching pomidorkas ...")
         while True:
