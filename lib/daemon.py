@@ -30,7 +30,7 @@ class Daemon(object):
 
     def _pidfile_check(self):
         if os.path.isfile(self.pidfile):
-            self.logger("Looks like another instance is already running, check pidfile:\n  %s" % self.pidfile)
+            self.logger.info("Looks like another instance is already running, check pidfile:\n  %s" % self.pidfile)
             sys.exit(1)
 
     def _pidfile_write(self):
@@ -48,21 +48,21 @@ class Daemon(object):
     def run(self):
         n = Notify()
 
-        self.logger("Watching pomidorkas ...")
+        self.logger.info("Watching pomidorkas ...")
         while True:
             p = Pomodoro(self.data_fname)
 
             if p.running:
                 duration = p.duration()
                 left = self.duration - p.duration()
-                self.logger('Found running pomidorka, checking duration')
+                self.logger.info('Found running pomidorka, checking duration')
                 if duration > self.duration:
-                    self.logger('Pomidorka done, notifying and stopping')
+                    self.logger.info('Pomidorka done, notifying and stopping')
                     n.send()
                     p.stop()
                 else:
-                    self.logger('Pomidorka is going for %s seconds, %s seconds left' % (str(duration), str(left)))
+                    self.logger.info('Pomidorka is going for %s seconds, %s seconds left' % (str(duration), str(left)))
             else:
-                self.logger('No running pomidorkas')
+                self.logger.info('No running pomidorkas')
 
             time.sleep(self.loop_delay)
